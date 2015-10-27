@@ -1,3 +1,3 @@
-web: rails s -p 4000
+web: rails s -p 4000 -b $(/sbin/ifconfig eth0 | awk '/inet addr/ {split ($2,A,":"); print A[2]}')
 client: sh -c 'cd client && $(npm bin)/webpack -w --config webpack.rails.config.js'
 hot: sh -c 'cd client && node server.js'
