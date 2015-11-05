@@ -31,3 +31,6 @@ vendor/ruby
 
 # Rubymine/IntelliJ
 .idea
+
+#vagrant
+.vagrant
