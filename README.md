@@ -2,9 +2,8 @@
 [![Build Status](https://travis-ci.org/shakacode/react-webpack-rails-tutorial.svg?branch=code_coverage-linting)](https://travis-ci.org/shakacode/react-webpack-rails-tutorial)
 [![Coverage Status](https://coveralls.io/repos/shakacode/react-webpack-rails-tutorial/badge.svg?branch=master&service=github)](https://coveralls.io/github/shakacode/react-webpack-rails-tutorial?branch=master)
 [![Dependency Status](https://gemnasium.com/shakacode/react-webpack-rails-tutorial.svg)](https://gemnasium.com/shakacode/react-webpack-rails-tutorial)
-# React, Redux, React-Bootstrap, and ES-7 on Rails via WebPack and the react_on_rails gem
-
-## Now with Redux and ES7! Servering Rendering ASAP (Shaka Code's react_on_rails gem)!
+# React, Redux, React-Bootstrap, ES7, Webpack Rails
+## Servering Rendering via the react_on_rails gem
 
 By Justin Gordon and the Shaka Code Team, http://www.railsonmaui.com
 
@@ -12,11 +11,11 @@ By Justin Gordon and the Shaka Code Team, http://www.railsonmaui.com
   See [pull requests](https://github.com/shakacode/react-webpack-rails-tutorial/pulls?utf8=%E2%9C%93&q=is%3Apr).
 - If this work interests you and you are looking for full or part-time remote work, please
   [click here](http://forum.railsonmaui.com/t/railsonmaui-is-hiring-and-partnering-part-time-remote-is-ok/156).
-- Please email us at [justin@railsonmaui.com](mailto:justin@railsonmaui.com) if you have a ReactJs +
+- Please email us at [justin@shakacode.com](mailto:justin@shakacode.com) if you have a ReactJs +
   Rails project and are interested in help from our experienced team.
 - Please file issues for problems and feature requests.
 - Pull requests are welcome! (and a great way to get on the team)
-- Feel free to open discussions at [forum.railsonmaui.com](http://www.forum.railsonmaui.com).
+- Feel free to open discussions at [forum.railsonmaui.com](http://forum.railsonmaui.com).
 - We now have a [gitter chat room for this topic](https://gitter.im/shakacode/react-webpack-rails-tutorial).
 - Check out the [react_on_rails gem](https://github.com/shakacode/react_on_rails) for easy webpack integration.
 
@@ -40,8 +39,9 @@ You can see this tutorial live here: [http://reactrails.com/](http://reactrails.
 
 In no particular order:
 
+- Example of using the [react_on_rails](https://github.com/shakacode/react_on_rails)
 - Example of Rails 4.2 with ReactJs/Redux with Webpack and ES7.
-- Enable development of a JS client independently from Rails using Webpack Hot Module Reload. You can see this by starting the app and visiting http://localhost:3000
+- Enable development of a JS client independently from Rails using Webpack Hot Module Reload. You can see this by starting the app and visiting http://localhost:4000
 - Easily enable use of npm modules with a Rails application.
 - Easily enable retrofitting such a JS framework into an existing Rails app.
 - Enable the use of the JavaScript ES7 transpiler.
@@ -62,7 +62,7 @@ See package.json and Gemfile for versions
 
 # Basic Setup
 1. Be sure that you have Node installed. I use [nvm](https://github.com/creationix/nvm), with node
-   version `v0.12.7`. See this article [Updating and using nvm](http://forum.railsonmaui.com/t/updating-and-using-nvm/293).
+   version `v4.2.1`. See this article [Updating and using nvm](http://forum.railsonmaui.com/t/updating-and-using-nvm/293).
 1. `git clone git@github.com:shakacode/react-webpack-rails-tutorial.git`
 1. `cd react-webpack-rails-tutorial`
 1. Check that you have Ruby 2.2.2
@@ -72,8 +72,8 @@ See package.json and Gemfile for versions
 1. `npm install`
 1. `rake db:setup`
 1. `foreman start -f Procfile.dev`
-1. Open a browser tab to http://0.0.0.0:4000 for the Rail app example.
-1. Open a browser tab to http://0.0.0.0:3000 for the Hot Module Replacement Example.
+1. Open a browser tab to http://0.0.0.0:3000 for the Rails app example.
+1. Open a browser tab to http://0.0.0.0:4000 for the Hot Module Replacement Example.
 
 # Javascript development without Rails using Hot Module Replacement (HMR)
 
@@ -84,7 +84,7 @@ cd client
 node server.js
 ```
 
-Point your browser to http://0.0.0.0:3000.
+Point your browser to http://0.0.0.0:4000.
 
 Save a change to a JSX file and see it update immediately in the browser! Note,
 any browser state still exists, such as what you've typed in the comments box.
@@ -102,7 +102,7 @@ the JS bundle. We've chosen to let Rails handle CSS, SCSS, images, fonts.
 
 ```
 cd client
-$(npm bin)/webpack -w --config webpack.rails.config.js
+npm run build:dev
 ```
 
 `client-bundle.js` is generated and saved to `app/assets/javascripts`. This is included in the
@@ -118,18 +118,24 @@ the Rails server.
 ```
 cd <rails_project_name>
 rake db:setup
-rails s -p 4000
+rails s
 ```
 
-Now point your browser to http://0.0.0.0:4000.
+Now point your browser to http://0.0.0.0:3000.
 
 Note that it's important to run the Rails server on a different port than the node server.
 
 # Webpack configuration
-- `webpack.hot.config.js`: Used by server.js to run the demo HMR server.
-- `webpack.rails.config.js`: Used to generate the Rails bundles.
-- `webpack.common.config.js`: Common configuration file to minimize code duplication
+## Config Files
+- `webpack.client.base.config.js`: Common configuration file to minimize code duplication for client.rails and client.hot.
+- `webpack.client.rails.config.js`: Used to generate the Rails bundles for Rails use.
+- `webpack.client.hot.config.js`: Used by server.js to run the Webpack Dev server.
+- `webpack.server.rails.config.js`: Common configuration file to minimize code duplication
 between the HMR and Rails configurations.
+
+## Webpack Resources
+- Good overview: [Pete Hunt's Webpack Howto](https://github.com/petehunt/webpack-howto)
+- [Webpack Docs](http://webpack.github.io/docs/)
 
 # Bootstrap integration
 Notice that Bootstrap Sass is installed as both a gem and an npm package.
@@ -169,6 +175,22 @@ this custom code has been consolidated under Webpack in
 search path. See config `config/application.rb`. Keep that in mind as you
 customize the Bootstrap Sass variables.
 
+## Bourbon integration
+
+To use [bourbon](https://github.com/thoughtbot/bourbon) take the following steps:
+
+- Install node-bourbon `cd client && npm install --save node-bourbon`
+- Update [bootstrap-sass.js](https://github.com/shakacode/react-webpack-rails-tutorial/blob/master/client/bootstrap-sass.config.js) to use the right paths:
+```
+// Add this
+var bourbonPaths = require('node-bourbon').includePaths;
+module.exports = {
+  // ...
+  // And update this
+  styleLoader: 'style-loader!css-loader!sass-loader?imagePath=/assets/images&includePaths[]=' + bourbonPaths,
+```
+- `@import 'bourbon';` Import bourbon from your [scss file](https://github.com/shakacode/react-webpack-rails-tutorial/blob/master/client/assets/stylesheets/_app-styling-post-bootstrap-loading.scss) 
+
 # Notes on Rails assets
 ## Rails Asset Pipeline Magic
 Be sure to see [assets.rake](https://github.com/shakacode/react-webpack-rails-tutorial/blob/master/lib/tasks/assets.rake) for how webpack is invoked during asset compilation.
@@ -182,7 +204,7 @@ jQuery and jQuery-ujs are not required within `app/assets/javascript/application
 and have been moved under`/client` and managed by npm. The modules are exposed via entry point
 by `webpack.common.config.js`.
 
-In `application.js`, it's critical that any libraries that depend on jQuery come after the inclusion 
+In `application.js`, it's critical that any libraries that depend on jQuery come after the inclusion
 of the Webpack bundle, such as the twitter bootstrap javascript.
 
 Please refer to [Considerations for jQuery with Rails and Webpack](http://forum.railsonmaui.com/t/considerations-for-jquery-with-rails-and-webpack/344) for further info.
@@ -250,28 +272,47 @@ We have feature tests in /spec/features
 
 Run the tests with `rspec`.
 
-If you get errors when running rspec in that it can't find expected DOM elements, then you'll want to
-check if you have qt-4.x installed. You need at least qt-5 installed.
-
+## CI configuration
+Add those lines to your CI scripts after `bundle install`
 ```
-brew info qt
-```
-Check the output. Does the version say less than 5? If so, install qt5.
-```
-brew uninstall qt
-brew install qt5
+npm install
+cd client && npm run build:client && npm run build:server
 ```
 
-Then you need to run
+# JBuilder Notes
+There's a bunch of gotchas with using [Jbuilder](https://github.com/rails/jbuilder) to create the
+string version of the props to be sent to the react_on_rails_gem. The main thing is that if you
+follow the example and call Jbuilder like this, you don't run into a number of issues.
+
+```erb
+<%= react_component('App', render(template: "/comments/index.json.jbuilder"),
+    generator_function: true, prerender: true) %>
 ```
-gem uninstall capybara-webkit
-QMAKE=/usr/local/Cellar/qt5/5.4.0/bin/qmake bundle install
+
+However, if you try to set the value of the JSON string inside of the controller, then you will
+run into several issues with rendering the Jbuilder template from the controller.
+See the notes in this the example code for app/controllers/pages_controller.rb.
+
+Here's the samples of Jbuilder that we use:
+
+### comments/_comment.json.jbuilder:
+
+```ruby
+json.extract! comment, :id, :author, :text, :created_at, :updated_at
 ```
 
-**IMPORTANT** Be sure that the path indicated for the QMAKE corresponds to a correct path.
+### comments/index.json.jbuilder:
 
-Then run `rspec` and you should see the tests have passed.
+```ruby
+# Specify the partial, as well as the name of the variable used in the partial
+json.array! @comments, { partial: "comments/comment", as: :comment }
+```
 
+### comments/show.json.jbuilder:
+
+```ruby
+json.partial! 'comment', comment: @comment
+```
 
 # Linting and Code Inspection
 ## Running Lint and CI tasks
@@ -283,7 +324,7 @@ Then run `rspec` and you should see the tests have passed.
 ### RubyMine/Webstorm Linting Configuration
   * I started out trying to make RubyMine and WebStorm catch and fix linting errors. However, I find
     it faster to just do this with the command line. Your mileage may vary.
-  * Create a custom scope like this for RubyMine, named "Inspection Scope" 
+  * Create a custom scope like this for RubyMine, named "Inspection Scope"
 
     file[react-rails-tutorial]:*/&&!file[react-rails-tutorial]:tmp//*&&!file[react-rails-tutorial]:log//*&&!file[react-rails-tutorial]:client/node_modules//*&&!file[react-rails-tutorial]:client/assets/fonts//*&&!file[react-rails-tutorial]:app/assets/fonts//*&&!file[react-rails-tutorial]:bin//*&&!file[react-rails-tutorial]:app/assets/javascripts//*
 
@@ -312,12 +353,10 @@ WebStorm opened up to the `client` directory to focus on JSX and Sass files.
 
 # Misc Tips
 
-## Cleanup local branches merged to master 
+## Cleanup local branches merged to master
 ```
 alias git-cleanup-merged-branches='git branch --merged master | grep -v master | xargs git branch -d'
 ```
 
 # Open Code of Conduct
-This project adheres to the [Open Code of Conduct][code-of-conduct]. By participating, you are expected to uphold this code.
-[code-of-conduct](http://todogroup.org/opencodeofconduct/#fetch/opensource@github.com)
-
+This project adheres to the [Open Code of Conduct](http://todogroup.org/opencodeofconduct/#fetch/opensource@github.com). By participating, you are expected to uphold this code.

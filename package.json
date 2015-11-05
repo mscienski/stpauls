@@ -4,12 +4,12 @@
   "description": "Code from the React Webpack tutorial.",
   "main": "server.js",
   "engines": {
-    "node": "0.12.7"
+    "node": "4.2.0",
+    "npm": "3.3.6"
   },
   "scripts": {
-    "postinstall": "cd ./client && npm install",
-    "gulp": "cd ./client && npm run gulp",
-    "test": "rspec && client/bin/lint && (cd client && npm run jscs .)"
+    "postinstall": "cd client && npm install",
+    "test": "rspec && (cd client && npm run lint)"
   },
   "repository": {
     "type": "git",

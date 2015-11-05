@@ -10,10 +10,15 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 
-// Need to be on top to allow Poltergeist test to work with React.
-//= require es5-shim/es5-shim
+// CRITICAL that generated/vendor-bundle must be BEFORE bootstrap-sprockets and turbolinks since it is
+// exposing jQuery and jQuery-ujs
+//= require generated/vendor-bundle
+//= require generated/app-bundle
 
-// It is important that generated/client-bundle must be before bootstrap since it is exposing jQuery and jQuery-ujs
-//= require generated/client-bundle
-//= require bootstrap-sprockets
+// Next two depend on jQuery
 //= require turbolinks
+//= require bootstrap-sprockets
+
+//= require react_on_rails
+
+//= require rails_startup

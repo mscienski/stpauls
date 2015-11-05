@@ -13,10 +13,12 @@ namespace :assets do
 
   desc "Compile assets with webpack"
   task :webpack do
-    sh "cd client && $(npm bin)/webpack --config webpack.rails.config.js"
+    sh "cd client && npm run build:client"
+    sh "cd client && npm run build:server"
   end
 
   task :clobber do
-    rm_rf "#{RailsReactTutorial::Application.config.root}/app/assets/javascripts/rails-bundle.js"
+    rm_rf "#{Rails.application.config.root}/app/assets/javascripts/generated/client-bundle.js"
+    rm_rf "#{Rails.application.config.root}/app/assets/javascripts/generated/server-bundle.js"
   end
 end

@@ -1,5 +1,15 @@
 Please see parent directory README.md.
 
+Classes and React
+=========================
+As of October, 2015, we're still using React.createClass(), rather than extending React.Component.
+
+* [React.createClass Api](https://facebook.github.io/react/docs/top-level-api.html#react.createclass)
+* [React ES6 Classes](https://facebook.github.io/react/docs/reusable-components.html#es6-classes)
+* [How to Use Classes and Sleep at Night, Dan Abramov](https://medium.com/@dan_abramov/how-to-use-classes-and-sleep-at-night-9af8de78ccb4)
+
+We may change this in the near future.
+
 ESLint
 ==========================
 The `.eslintrc` file is based on the AirBnb [eslintrc](https://github.com/airbnb/javascript/blob/master/linters/.eslintrc).
@@ -22,26 +32,31 @@ For now:
     bin/lint
     
     
-Updating Node Dependenencies
+Updating Node Dependencies
 ===========================
 
 ```
 npm install -g npm-check-updates
 ```
  
-  
+Then run this to update the dependencies (starting at the top level).
+
 ```
-# Make sure you are in the `client` directory, then run:
+# Make sure you are in the top directory, then run:
 cd client 
 rm npm-shrinkwrap.json
 npm-check-updates -u
 npm install
+npm prune
 npm shrinkwrap
 ```
 
 Then confirm that the hot reload server and the rails server both work fine. You
 may have to delete `node_modules` and `npm-shrinkwrap.json` and then run `npm
 shrinkwrap`.
+
+Note: `npm prune` is required before running `npm shrinkwrap` to remove dependencies that are no longer needed after doing updates.
+
 
 Adding Node Modules
 =====================================

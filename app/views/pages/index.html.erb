@@ -1,12 +1,18 @@
-<h1>Using React + Redux + Rails Backend (using the react_on_rails gem)</h1>
+<h2>Using React (Server rendering) + Redux + Rails Backend (using the 
+  <a href="https://github.com/shakacode/react_on_rails">react_on_rails gem</a>)</h2>
+<p>Current Commit:
+  <%= link_to git_commit_sha_short,
+      "https://github.com/shakacode/react-webpack-rails-tutorial/commit/#{git_commit_sha}",
+      id: "git-commit-sha" %>
+</p>
 <ul>
   <li>
     If this work interests you and you're a developer or designer looking for full or part-time remote work: please
     <%= link_to "click here",
-      "http://forum.railsonmaui.com/t/railsonmaui-is-hiring-and-partnering-part-time-remote-is-ok/156" %>
+      "http://forum.shakacode.com/t/railsonmaui-is-hiring-and-partnering-part-time-remote-is-ok/156/3" %>
     and
     <%= link_to "here",
-     "http://forum.railsonmaui.com/t/railsonmaui-is-hiring-and-partnering-part-time-remote-is-ok/156/2" %>.
+     "http://forum.shakacode.com/t/railsonmaui-is-hiring-and-partnering-part-time-remote-is-ok/156/2" %>.
   </li>
   <li>
     Please see the
@@ -16,4 +22,6 @@
   </li>
 </ul>
 <hr/>
-<%= react_component('App', {}, prerender: false) %>
+
+<%= react_component('App', render(template: "/comments/index.json.jbuilder"),
+    generator_function: true, prerender: true) %>

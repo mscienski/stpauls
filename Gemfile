@@ -1,34 +1,35 @@
 source "https://rubygems.org"
-ruby "2.2.3"
+ruby "2.2.2"
 
 #
 # Bundle edge Rails instead: gem "rails", github: "rails/rails"
 gem "rails", "~>4.2"
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", group: :development
-gem "mysql2", group: :production
+
+# Note: We're using sqllite3 for development and testing
+gem "sqlite3", group: [:development, :test]
+
+group :production do
+  # Pg is used for Heroku
+  gem "pg"
+  gem "rails_12factor" # Never include this for development or tests
+end
 
 # Use SCSS for stylesheets
 gem "sass-rails"
-gem "bootstrap-sass", "~> 3.3.1"
+gem "bootstrap-sass", "~> 3.3"
 # Use Uglifier as compressor for JavaScript assets
-gem "uglifier", "~> 2.7.2"
+gem "uglifier"
 # Use CoffeeScript for .js.coffee assets and views
 gem "coffee-rails"
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem "therubyracer", platforms: :ruby
-
-# jquery as the JavaScript library has been moved under /client and managed by npm.
-# It is critical to not include any of the jquery gems when following this pattern or
-# else you might have multiple jQuery versions.
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem "turbolinks"
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder"
+
 # bundle exec rake doc:rails generates the API under doc/api.
 gem "sdoc", group: :doc
-gem "es5-shim-rails"
 
 # Use ActiveModel has_secure_password
 # gem "bcrypt", "~> 3.1.7"
@@ -39,44 +40,49 @@ gem "rails-html-sanitizer"
 # Use Unicorn as the app server
 gem "unicorn"
 
-gem "react_on_rails", "~> 0.1.1"
+gem "react_on_rails", "~> 1.0.0.pre"
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem "therubyracer"
 
 gem "autoprefixer-rails"
 
-# Use Capistrano for deployment
-# gem "capistrano-rails", group: :development
-group :production do
-  gem "rails_12factor"
-end
+gem "awesome_print"
+
+# jquery as the JavaScript library has been moved under /client and managed by npm.
+# It is critical to not include any of the jquery gems when following this pattern or
+# else you might have multiple jQuery versions.
 
 group :development, :test do
-  # Call "debugger" anywhere in the code to stop execution and get a debugger console
-  gem "byebug"
-
   # Access an IRB console on exceptions page and /console in development
   gem "web-console"
 
+  ################################################################################
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
-
   gem "spring-commands-rspec"
 
+  ################################################################################
   # Manage application processes
   gem "foreman"
-
   gem "factory_girl_rails"
 
+  ################################################################################
+  # Linters and Security
   gem "rubocop", require: false
-
   gem "ruby-lint", require: false
-
+  # Critical that require: false be set! https://github.com/brigade/scss-lint/issues/278
   gem "scss_lint", require: false
-
   gem "brakeman", require: false
-
   gem "bundler-audit", require: false
 
-  gem "rainbow"
+  ################################################################################
+  # Favorite debugging gems
+  gem "pry"
+  gem "pry-doc"
+  gem "pry-rails"
+  gem "pry-stack_explorer"
+  gem "pry-rescue"
+  gem "pry-byebug"
 end
 
 group :test  do
@@ -84,8 +90,8 @@ group :test  do
   gem "rspec-rails"
   gem "capybara"
   gem "capybara-screenshot"
-  gem "poltergeist"
-  gem "phantomjs", require: "phantomjs/poltergeist"
+  gem "selenium-webdriver"
+  gem "chromedriver-helper"
   gem "database_cleaner"
   gem "launchy"
 end

@@ -1,12 +1,11 @@
 # This file is copied to spec/ when you run "rails generate rspec:install"
 ENV["RAILS_ENV"] ||= "test"
 require "coveralls"
-Coveralls.wear!("rails")  # must occur before any of your application code is required
+Coveralls.wear!("rails") # must occur before any of your application code is required
 require "spec_helper"
 require File.expand_path("../../config/environment", __FILE__)
 require "rspec/rails"
 require "capybara/rspec"
-require "capybara/poltergeist"
 require "capybara-screenshot/rspec"
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -50,8 +49,32 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  Capybara.javascript_driver = :poltergeist
+  # selenium_firefox webdriver only works for Travis-CI builds.
+  driver = ENV["DRIVER"].try(:to_sym)
+  if driver.nil? || driver == :selenium_chrome
+    Capybara.register_driver :selenium_chrome do |app|
+      Capybara::Selenium::Driver.new(app, browser: :chrome)
+    end
+    Capybara.javascript_driver = :selenium_chrome
 
+    Capybara::Screenshot.register_driver(:selenium_chrome) do |js_driver, path|
+      js_driver.browser.save_screenshot(path)
+    end
+  else
+    Capybara.register_driver :selenium_firefox do |app|
+      Capybara::Selenium::Driver.new(app, browser: :firefox)
+    end
+    Capybara.javascript_driver = :selenium_firefox
+
+    Capybara::Screenshot.register_driver(:selenium_firefox) do |js_driver, path|
+      js_driver.browser.save_screenshot(path)
+    end
+  end
+
+  Capybara.default_wait_time = 15
+  puts "Capybara using driver: #{Capybara.javascript_driver}"
+
+  Capybara::Screenshot.prune_strategy = { keep: 10 }
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
