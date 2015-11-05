@@ -1,4 +1,4 @@
-web: rails s
+web: rails s -p 4000 -b $(/sbin/ifconfig eth0 | awk '/inet addr/ {split ($2,A,":"); print A[2]}')
 client: sh -c 'rm app/assets/javascripts/generated/* || true && cd client && npm run build:dev:client'
 server: sh -c 'cd client && npm run build:dev:server'
 hot: sh -c 'cd client && npm start'
