@@ -1,362 +1,259 @@
-[![Codeship Status for justin808/react-webpack-rails-tutorial](https://codeship.com/projects/287b26d0-0c05-0133-7a33-02e67aca5f06/status?branch=master)](https://codeship.com/projects/90975)
-[![Build Status](https://travis-ci.org/shakacode/react-webpack-rails-tutorial.svg?branch=code_coverage-linting)](https://travis-ci.org/shakacode/react-webpack-rails-tutorial)
-[![Coverage Status](https://coveralls.io/repos/shakacode/react-webpack-rails-tutorial/badge.svg?branch=master&service=github)](https://coveralls.io/github/shakacode/react-webpack-rails-tutorial?branch=master)
-[![Dependency Status](https://gemnasium.com/shakacode/react-webpack-rails-tutorial.svg)](https://gemnasium.com/shakacode/react-webpack-rails-tutorial)
-# React, Redux, React-Bootstrap, ES7, Webpack Rails
-## Servering Rendering via the react_on_rails gem
-
-By Justin Gordon and the Shaka Code Team, http://www.railsonmaui.com
-
-- If you came to here from the blog article, this example project has evolved.
-  See [pull requests](https://github.com/shakacode/react-webpack-rails-tutorial/pulls?utf8=%E2%9C%93&q=is%3Apr).
-- If this work interests you and you are looking for full or part-time remote work, please
-  [click here](http://forum.railsonmaui.com/t/railsonmaui-is-hiring-and-partnering-part-time-remote-is-ok/156).
-- Please email us at [justin@shakacode.com](mailto:justin@shakacode.com) if you have a ReactJs +
-  Rails project and are interested in help from our experienced team.
-- Please file issues for problems and feature requests.
-- Pull requests are welcome! (and a great way to get on the team)
-- Feel free to open discussions at [forum.railsonmaui.com](http://forum.railsonmaui.com).
-- We now have a [gitter chat room for this topic](https://gitter.im/shakacode/react-webpack-rails-tutorial).
-- Check out the [react_on_rails gem](https://github.com/shakacode/react_on_rails) for easy webpack integration.
-
-A Full tutorial article can be found at: [Fast Rich Client Rails Development With Webpack and the ES6 Transpiler](http://www.railsonmaui.com/blog/2014/10/03/integrating-webpack-and-the-es6-transpiler-into-an-existing-rails-project/)
-
-Note, this source code repository is way ahead of the tutorial. We plan to update the tutorial as soon as can catch our breath!
-
-[Discussion forum regarding the tutorial](http://forum.railsonmaui.com/t/fast-rich-client-rails-development-with-webpack-and-the-es6-transpiler/82/10)
-
-# Example Application
-This is a simple example application that illustrates the use of ReactJs to implement a commenting
-system. Front-end code leverages both ReactJs and Rails asset pipeline while the backend is 100% Rails.
-It shows off a little bit of the interactivity of a ReactJs application, allowing the commmenter to
-choose the form layout. `react-bootstrap` is used for the React components.
-
-A pure Rails UI generated from scaffolding is shown for comparison.
-
-You can see this tutorial live here: [http://reactrails.com/](http://reactrails.com/)
-
-# Motivation
-
-In no particular order:
-
-- Example of using the [react_on_rails](https://github.com/shakacode/react_on_rails)
-- Example of Rails 4.2 with ReactJs/Redux with Webpack and ES7.
-- Enable development of a JS client independently from Rails using Webpack Hot Module Reload. You can see this by starting the app and visiting http://localhost:4000
-- Easily enable use of npm modules with a Rails application.
-- Easily enable retrofitting such a JS framework into an existing Rails app.
-- Enable the use of the JavaScript ES7 transpiler.
-- Example setting up Ruby and ES7 linting in a real project.
-- Example of thorough use of Ruby and JavaScript linters, and other CI tasks.
-
-# Technologies involved
-
-See package.json and Gemfile for versions
-
-1. [React](http://facebook.github.io/react/) (for front-end app)
-2. [react-bootstrap](https://react-bootstrap.github.io/)
-3. [Redux](https://github.com/rackt/redux)
-4. [Webpack with hot-reload](https://github.com/webpack/docs/wiki/hot-module-replacement-with-webpack) (for local dev)
-5. Babel transpiler (https://github.com/babel/babel)
-6. Rails 4.2 (for backend app)
-7. Heroku (for deployment)
-
-# Basic Setup
-1. Be sure that you have Node installed. I use [nvm](https://github.com/creationix/nvm), with node
-   version `v4.2.1`. See this article [Updating and using nvm](http://forum.railsonmaui.com/t/updating-and-using-nvm/293).
-1. `git clone git@github.com:shakacode/react-webpack-rails-tutorial.git`
-1. `cd react-webpack-rails-tutorial`
-1. Check that you have Ruby 2.2.2
-1. Check that you're using the right version of node. Run `nvm list` to check.
-1. Check that you have Postgres installed. Run `which postgres` to check.
-1. `bundle install`
-1. `npm install`
-1. `rake db:setup`
-1. `foreman start -f Procfile.dev`
-1. Open a browser tab to http://0.0.0.0:3000 for the Rails app example.
-1. Open a browser tab to http://0.0.0.0:4000 for the Hot Module Replacement Example.
-
-# Javascript development without Rails using Hot Module Replacement (HMR)
-
-Setup node and run the node server with file `server.js`.
-
-```
-cd client
-node server.js
-```
-
-Point your browser to http://0.0.0.0:4000.
-
-Save a change to a JSX file and see it update immediately in the browser! Note,
-any browser state still exists, such as what you've typed in the comments box.
-That's totally different than [Live Reload](http://livereload.com/) which refreshes
-the browser.
-
-# Rails integration
-
-## Build JS/CSS bundles
-
-Run `webpack` to build the JS/CSS bundles and have them saved in the
-Rails asset pipeline (app/assets). Although not shown in this tutorial, the
-Webpack ExtractTextPlugin can optionally be used to extract the CSS out of
-the JS bundle. We've chosen to let Rails handle CSS, SCSS, images, fonts.
-
-```
-cd client
-npm run build:dev
-```
-
-`client-bundle.js` is generated and saved to `app/assets/javascripts`. This is included in the
-Rails asset pipeline.
-
-Observe how the bundles are automatically re-generated whenever your JSX changes.
-
-## Run Rails server
-
-Once the JS bundle has been generated into the Rails asset pipeline, you can start
-the Rails server.
-
-```
-cd <rails_project_name>
-rake db:setup
-rails s
-```
-
-Now point your browser to http://0.0.0.0:3000.
-
-Note that it's important to run the Rails server on a different port than the node server.
-
-# Webpack configuration
-## Config Files
-- `webpack.client.base.config.js`: Common configuration file to minimize code duplication for client.rails and client.hot.
-- `webpack.client.rails.config.js`: Used to generate the Rails bundles for Rails use.
-- `webpack.client.hot.config.js`: Used by server.js to run the Webpack Dev server.
-- `webpack.server.rails.config.js`: Common configuration file to minimize code duplication
-between the HMR and Rails configurations.
-
-## Webpack Resources
-- Good overview: [Pete Hunt's Webpack Howto](https://github.com/petehunt/webpack-howto)
-- [Webpack Docs](http://webpack.github.io/docs/)
-
-# Bootstrap integration
-Notice that Bootstrap Sass is installed as both a gem and an npm package.
-When running the Rails app, the bootstrap-sass gem assets are loaded directly
-through the asset pipeline without going through Webpack.
-
-See `app/assets/application.css.scss`.
-
-On the other hand when running the Webpack dev server, the bootrap-sass npm
-assets are loaded through Webpack (with help of the bootstrap-sass-loader).
-See `webpack/webpack.hot.config.js`.
-
-Bootstrap can be customized by hand-picking which modules to load and/or overwriting
-some of the Sass variables defined by the framework.
-
-## Bootstrap modules customization
-
-If you are not using all the Bootstrap modules then you'll likely want to customize
-it to avoid loading unused assets. This customization is done in separate files
-for the Rails app versus the Webpack dev server so it's important to keep these
-in-sync as you develop your app in parallel using the Rails and the Webpack HMR
-environments.
-
-- Rails Bootstrap customization file: `app/assets/stylesheets/_bootstrap-custom.scss`
-- Webpack HMR Bootstrap customization file: `webpack/bootstrap-sass.config.js`
-
-## Bootstrap variables customization
-
-If you need to customize some of the Sass variables defined in Bootstrap you
-can do so by overwriting these variables in a separate file and have it loaded
-before other Bootstrap modules.
-
-To avoid duplicating this customization between Rails and Webpack HMR,
-this custom code has been consolidated under Webpack in
-`webpack/assets/stylesheets/_bootstrap-variables-customization.scss` and the
-`webpack/assets/stylesheets` directory has been added to the Rails asset pipeline
-search path. See config `config/application.rb`. Keep that in mind as you
-customize the Bootstrap Sass variables.
-
-## Bourbon integration
-
-To use [bourbon](https://github.com/thoughtbot/bourbon) take the following steps:
-
-- Install node-bourbon `cd client && npm install --save node-bourbon`
-- Update [bootstrap-sass.js](https://github.com/shakacode/react-webpack-rails-tutorial/blob/master/client/bootstrap-sass.config.js) to use the right paths:
-```
-// Add this
-var bourbonPaths = require('node-bourbon').includePaths;
-module.exports = {
-  // ...
-  // And update this
-  styleLoader: 'style-loader!css-loader!sass-loader?imagePath=/assets/images&includePaths[]=' + bourbonPaths,
-```
-- `@import 'bourbon';` Import bourbon from your [scss file](https://github.com/shakacode/react-webpack-rails-tutorial/blob/master/client/assets/stylesheets/_app-styling-post-bootstrap-loading.scss) 
-
-# Notes on Rails assets
-## Rails Asset Pipeline Magic
-Be sure to see [assets.rake](https://github.com/shakacode/react-webpack-rails-tutorial/blob/master/lib/tasks/assets.rake) for how webpack is invoked during asset compilation.
-
-## Javascript
-The `webpack.rails.config.js` file generates client-bundle.js which is then included
-by the Rails asset pipeline.
-
-##jQuery with Rails and Webpack
-jQuery and jQuery-ujs are not required within `app/assets/javascript/application.js`
-and have been moved under`/client` and managed by npm. The modules are exposed via entry point
-by `webpack.common.config.js`.
-
-In `application.js`, it's critical that any libraries that depend on jQuery come after the inclusion
-of the Webpack bundle, such as the twitter bootstrap javascript.
-
-Please refer to [Considerations for jQuery with Rails and Webpack](http://forum.railsonmaui.com/t/considerations-for-jquery-with-rails-and-webpack/344) for further info.
-
-
-## Sass and images
-1. The Webpack server loads the images from the **symlink** of the
-   `app/assets/images` directory.
-2. Since the images are not moved, Rails loads images via the normal asset
-   pipeline features.
-3. The `image-url` sass helper takes care of mapping the correct directories for
-   images. The image directory for the webpack server is configured by this
-   line:
-
-```
-{ test: /\.scss$/, loader: "style!css!sass?outputStyle=expanded&imagePath=/assets/images"}
-```
-
-## Sass and fonts
-The tutorial makes use of a custom font OpenSans-Light. The font files are located
-under `app/assets/font` and are loaded by both the Rails asset pipeline and
-the Webpack HMR server. See the **symlink** under `webpack/assets/fonts` which
-points to `app/assets/fonts`.
-
-Note that the libsass C library, which is used by the Webpack sass-loader, does not
-support the font-url() helper so we use url() instead. See the hack in
-`webpack/assets/stylesheets/_bootstrap-variables-customization.scss`.
-
-# Process management
-Run the following command in your development environment to invoke both Webpack and Rails.
-```
-bundle exec foreman start -f Procfile.dev
-```
-
-# Source Maps
-They work for both Rails and the Webpack Server!
-
-# Deploying to Heroku
-
-In order to deploy to heroku, you'll need to run this command once to set a custom
-buildpack:
-
-```
-heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git
-```
-
-This runs the two buildpacks in the `.buildpacks` directory.
-
-Also make sure you are running the latest heroku stack, cedar-14, to avoid running
-into the [following issue](https://github.com/sass/node-sass/issues/467#issuecomment-61729195).
-
-```
-heroku stack:set cedar-14 -a react-webpack-rails-tutorial
-```
-
-To deploy the app on Heroku:
-```
-git push heroku master
-```
-
-# Running Tests
-*Default rake task runs tests and linting*
-
-We have feature tests in /spec/features
-
-Run the tests with `rspec`.
-
-## CI configuration
-Add those lines to your CI scripts after `bundle install`
-```
+# React Redux Universal Hot Example
+
+[![build status](https://img.shields.io/travis/erikras/react-redux-universal-hot-example/master.svg?style=flat-square)](https://travis-ci.org/erikras/react-redux-universal-hot-example)
+[![Dependency Status](https://david-dm.org/erikras/react-redux-universal-hot-example.svg?style=flat-square)](https://david-dm.org/erikras/react-redux-universal-hot-example)
+[![devDependency Status](https://david-dm.org/erikras/react-redux-universal-hot-example/dev-status.svg?style=flat-square)](https://david-dm.org/erikras/react-redux-universal-hot-example#info=devDependencies)
+[![react-redux-universal channel on discord](https://img.shields.io/badge/discord-react--redux--universal%40reactiflux-brightgreen.svg?style=flat-square)](https://discord.gg/0ZcbPKXt5bZZb1Ko)
+[![Demo on Heroku](https://img.shields.io/badge/demo-heroku-brightgreen.svg?style=flat-square)](https://react-redux.herokuapp.com)
+[![PayPal donate button](https://img.shields.io/badge/donate-paypal-brightgreen.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=E2LK57ZQ9YRMN)
+
+---
+
+## About
+
+This is a starter boilerplate app I've put together using the following technologies:
+
+* ~~Isomorphic~~ [Universal](https://medium.com/@mjackson/universal-javascript-4761051b7ae9) rendering
+* Both client and server make calls to load data from separate API server
+* [React](https://github.com/facebook/react)
+* [React Router](https://github.com/rackt/react-router)
+* [Express](http://expressjs.com)
+* [Babel](http://babeljs.io) for ES6 and ES7 magic
+* [Webpack](http://webpack.github.io) for bundling
+* [Webpack Dev Middleware](http://webpack.github.io/docs/webpack-dev-middleware.html)
+* [Webpack Hot Middleware](https://github.com/glenjamin/webpack-hot-middleware)
+* [Redux](https://github.com/rackt/redux)'s futuristic [Flux](https://facebook.github.io/react/blog/2014/05/06/flux.html) implementation
+* [Redux Dev Tools](https://github.com/gaearon/redux-devtools) for next generation DX (developer experience). Watch [Dan Abramov's talk](https://www.youtube.com/watch?v=xsSnOQynTHs).
+* [Redux Router](https://github.com/acdlite/redux-router) Keep your router state in your Redux store
+  - There is a migration in progress to [Redux Simple Router](https://github.com/jlongster/redux-simple-router/). Please test it out in the [simple-router](https://github.com/erikras/react-redux-universal-hot-example/tree/simple-router) branch! 
+* [ESLint](http://eslint.org) to maintain a consistent code style
+* [redux-form](https://github.com/erikras/redux-form) to manage form state in Redux
+* [lru-memoize](https://github.com/erikras/lru-memoize) to speed up form validation
+* [multireducer](https://github.com/erikras/multireducer) to combine single reducers into one key-based reducer
+* [style-loader](https://github.com/webpack/style-loader), [sass-loader](https://github.com/jtangelder/sass-loader) and [less-loader](https://github.com/webpack/less-loader) to allow import of stylesheets in plain css, sass and less,
+* [bootstrap-sass-loader](https://github.com/shakacode/bootstrap-sass-loader) and [font-awesome-webpack](https://github.com/gowravshekar/font-awesome-webpack) to customize Bootstrap and FontAwesome
+* [react-helmet](https://github.com/nfl/react-helmet) to manage title and meta tag information on both server and client
+* [webpack-isomorphic-tools](https://github.com/halt-hammerzeit/webpack-isomorphic-tools) to allow require() work for statics both on client and server
+* [mocha](https://mochajs.org/) to allow writing unit tests for the project.
+
+I cobbled this together from a wide variety of similar "starter" repositories. As I post this in June 2015, all of these libraries are right at the bleeding edge of web development. They may fall out of fashion as quickly as they have come into it, but I personally believe that this stack is the future of web development and will survive for several years. I'm building my new projects like this, and I recommend that you do, too.
+
+## Installation
+
+```bash
 npm install
-cd client && npm run build:client && npm run build:server
 ```
 
-# JBuilder Notes
-There's a bunch of gotchas with using [Jbuilder](https://github.com/rails/jbuilder) to create the
-string version of the props to be sent to the react_on_rails_gem. The main thing is that if you
-follow the example and call Jbuilder like this, you don't run into a number of issues.
+## Running Dev Server
 
-```erb
-<%= react_component('App', render(template: "/comments/index.json.jbuilder"),
-    generator_function: true, prerender: true) %>
+```bash
+npm run dev
 ```
 
-However, if you try to set the value of the JSON string inside of the controller, then you will
-run into several issues with rendering the Jbuilder template from the controller.
-See the notes in this the example code for app/controllers/pages_controller.rb.
+The first time it may take a little while to generate the first `webpack-assets.json` and complain with a few dozen `[webpack-isomorphic-tools] (waiting for the first Webpack build to finish)` printouts, but be patient. Give it 30 seconds.
 
-Here's the samples of Jbuilder that we use:
+### Using Redux DevTools
 
-### comments/_comment.json.jbuilder:
+[Redux Devtools](https://github.com/gaearon/redux-devtools) are enabled by default in development.
 
-```ruby
-json.extract! comment, :id, :author, :text, :created_at, :updated_at
+- <kbd>CTRL</kbd>+<kbd>H</kbd> Toggle DevTools Dock
+- <kbd>CTRL</kbd>+<kbd>Q</kbd> Move DevTools Dock Position
+- see [redux-devtools-dock-monitor](https://github.com/gaearon/redux-devtools-dock-monitor) for more detailed information.
+
+If you have the 
+[Redux DevTools chrome extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) installed it will automatically be used on the client-side instead.
+
+If you want to disable the dev tools during development, set `__DEVTOOLS__` to `false` in `/webpack/dev.config.js`.  
+DevTools are not enabled during production.
+
+## Building and Running Production Server
+
+```bash
+npm run build
+npm run start
 ```
 
-### comments/index.json.jbuilder:
+## Demo
 
-```ruby
-# Specify the partial, as well as the name of the variable used in the partial
-json.array! @comments, { partial: "comments/comment", as: :comment }
+A demonstration of this app can be seen [running on heroku](https://react-redux.herokuapp.com), which is a deployment of the [heroku branch](https://github.com/erikras/react-redux-universal-hot-example/tree/heroku).
+
+## Documentation
+
+* [Exploring the Demo App](docs/ExploringTheDemoApp/ExploringTheDemoApp.md) is a guide that can be used before you install the kit.
+* [Installing the Kit](docs/InstallingTheKit/InstallingTheKit.md) guides you through installation and running the development server locally.
+* [Adding Text to the Home Page](docs/AddingToHomePage/AddingToHomePage.md) guides you through adding "Hello, World!" to the home page.
+* [React Tutorial - Converting Reflux to Redux](http://engineering.wework.com/process/2015/10/01/react-reflux-to-redux/), by Matt Star
+   If you are the kind of person that learns best by following along a tutorial, I can recommend Matt Star's overview and examples.
+
+
+## Explanation
+
+What initially gets run is `bin/server.js`, which does little more than enable ES6 and ES7 awesomeness in the
+server-side node code. It then initiates `server.js`. In `server.js` we proxy any requests to `/api/*` to the
+[API server](#api-server), running at `localhost:3030`. All the data fetching calls from the client go to `/api/*`.
+Aside from serving the favicon and static content from `/static`, the only thing `server.js` does is initiate delegate
+rendering to `react-router`. At the bottom of `server.js`, we listen to port `3000` and initiate the API server.
+
+#### Routing and HTML return
+
+The primary section of `server.js` generates an HTML page with the contents returned by `react-router`. First we instantiate an `ApiClient`, a facade that both server and client code use to talk to the API server. On the server side, `ApiClient` is given the request object so that it can pass along the session cookie to the API server to maintain session state. We pass this API client facade to the `redux` middleware so that the action creators have access to it.
+
+Then we perform [server-side data fetching](#server-side-data-fetching), wait for the data to be loaded, and render the page with the now-fully-loaded `redux` state.
+
+The last interesting bit of the main routing section of `server.js` is that we swap in the hashed script and css from the `webpack-assets.json` that the Webpack Dev Server – or the Webpack build process on production – has spit out on its last run. You won't have to deal with `webpack-assets.json` manually because [webpack-isomorphic-tools](https://github.com/halt-hammerzeit/webpack-isomorphic-tools) take care of that.
+
+We also spit out the `redux` state into a global `window.__data` variable in the webpage to be loaded by the client-side `redux` code.
+
+#### Server-side Data Fetching
+
+We ask `react-router` for a list of all the routes that match the current request and we check to see if any of the matched routes has a static `fetchData()` function. If it does, we pass the redux dispatcher to it and collect the promises returned. Those promises will be resolved when each matching route has loaded its necessary data from the API server.
+
+#### Client Side
+
+The client side entry point is reasonably named `client.js`. All it does is load the routes, initiate `react-router`, rehydrate the redux state from the `window.__data` passed in from the server, and render the page over top of the server-rendered DOM. This makes React enable all its event listeners without having to re-render the DOM.
+
+#### Redux Middleware
+
+The middleware, [`clientMiddleware.js`](https://github.com/erikras/react-redux-universal-hot-example/blob/master/src/redux/middleware/clientMiddleware.js), serves two functions:
+
+1. To allow the action creators access to the client API facade. Remember this is the same on both the client and the server, and cannot simply be `import`ed because it holds the cookie needed to maintain session on server-to-server requests.
+2. To allow some actions to pass a "promise generator", a function that takes the API client and returns a promise. Such actions require three action types, the `REQUEST` action that initiates the data loading, and a `SUCCESS` and `FAILURE` action that will be fired depending on the result of the promise. There are other ways to accomplish this, some discussed [here](https://github.com/rackt/redux/issues/99), which you may prefer, but to the author of this example, the middleware way feels cleanest.
+
+#### Redux Modules... *What the Duck*?
+
+The `src/redux/modules` folder contains "modules" to help
+isolate concerns within a Redux application (aka [Ducks](https://github.com/erikras/ducks-modular-redux), a Redux Style Proposal that I came up with). I encourage you to read the
+[Ducks Docs](https://github.com/erikras/ducks-modular-redux) and provide feedback.
+
+#### API Server
+
+This is where the meat of your server-side application goes. It doesn't have to be implemented in Node or Express at all. This is where you connect to your database and provide authentication and session management. In this example, it's just spitting out some json with the current time stamp.
+
+#### Getting data and actions into components
+
+To understand how the data and action bindings get into the components – there's only one, `InfoBar`, in this example – I'm going to refer to you to the [Redux](https://github.com/gaearon/redux) library. The only innovation I've made is to package the component and its wrapper in the same js file. This is to encapsulate the fact that the component is bound to the `redux` actions and state. The component using `InfoBar` needn't know or care if `InfoBar` uses the `redux` data or not.
+
+#### Images
+
+Now it's possible to render the image both on client and server. Please refer to issue [#39](https://github.com/erikras/react-redux-universal-hot-example/issues/39) for more detail discussion, the usage would be like below (super easy):
+
+```javascript
+let logoImage = require('./logo.png');
 ```
 
-### comments/show.json.jbuilder:
+#### Styles
 
-```ruby
-json.partial! 'comment', comment: @comment
+This project uses [local styles](https://medium.com/seek-ui-engineering/the-end-of-global-css-90d2a4a06284) using [css-loader](https://github.com/webpack/css-loader). The way it works is that you import your stylesheet at the top of the `render()` function in your React Component, and then you use the classnames returned from that import. Like so:
+
+```javascript
+render() {
+const styles = require('./App.scss');
+...
 ```
 
-# Linting and Code Inspection
-## Running Lint and CI tasks
-* Default rake task runs tests and linting (yes, repeating this!) (see `ci.rake`)
-* See file [README.md](client/README.md) for how to run ESLint and JSCS
-* See scripts `scripts/lint` and `client/bin/lint`.
-* We're using the [AirBnb JavaScript style guidelines](https://github.com/airbnb/javascript).
+Then you set the `className` of your element to match one of the CSS classes in your SCSS file, and you're good to go!
 
-### RubyMine/Webstorm Linting Configuration
-  * I started out trying to make RubyMine and WebStorm catch and fix linting errors. However, I find
-    it faster to just do this with the command line. Your mileage may vary.
-  * Create a custom scope like this for RubyMine, named "Inspection Scope"
-
-    file[react-rails-tutorial]:*/&&!file[react-rails-tutorial]:tmp//*&&!file[react-rails-tutorial]:log//*&&!file[react-rails-tutorial]:client/node_modules//*&&!file[react-rails-tutorial]:client/assets/fonts//*&&!file[react-rails-tutorial]:app/assets/fonts//*&&!file[react-rails-tutorial]:bin//*&&!file[react-rails-tutorial]:app/assets/javascripts//*
-
-  * Install the code style and inspection files in [client/jetbrains](client/jetbrains)
-  * Use the installed inspection settings and new Inspection Scope for code inspection.
-  * RubyMine configuration is optional. All linters run from the command line.
-
-## Linters
-  1. [Rubocop](https://github.com/bbatsov/rubocop)
-  2. [Ruby-Lint](https://github.com/YorickPeterse/ruby-lint)
-  3. [Eslint](http://eslint.org/)
-  4. [JSCS](https://github.com/jscs-dev/node-jscs)
-  5. [scss-lint](https://github.com/brigade/scss-lint)
-  6. [brakeman](http://brakemanscanner.org/)
-  7. [bundle-audit](https://github.com/rubysec/bundler-audit)
-
-# Contributors
-* [Martin Breining](https://github.com/mbreining)
-* [Dylan Grafmyre](https://github.com/Dgrafmyre)
-
-# RubyMine and WebStorm
-Special thanks to [JetBrains](https://www.jetbrains.com) for their great tools
-[RubyMine](https://www.jetbrains.com/ruby/) and [WebStorm](https://www.jetbrains.com/webstorm/).
-The developers of this project use RubyMine at the top level, mostly for Ruby work, and we use
-WebStorm opened up to the `client` directory to focus on JSX and Sass files.
-
-# Misc Tips
-
-## Cleanup local branches merged to master
-```
-alias git-cleanup-merged-branches='git branch --merged master | grep -v master | xargs git branch -d'
+```jsx
+<div className={styles.mySection}> ... </div>
 ```
 
-# Open Code of Conduct
-This project adheres to the [Open Code of Conduct](http://todogroup.org/opencodeofconduct/#fetch/opensource@github.com). By participating, you are expected to uphold this code.
+#### Alternative to Local Styles
+
+If you'd like to use plain inline styles this is possible with a few modifications to your webpack configuration.
+
+**1. Configure Isomorphic Tools to Accept CSS**
+
+In `webpack-isomorphic-tools.js` add **css** to the list of style module extensions
+
+```javascript
+    style_modules: {
+      extensions: ['less','scss','css'],
+```
+
+**2. Add a CSS loader to webpack dev config**
+
+In `dev.config.js` modify **module loaders** to include a test and loader for css
+
+```javascript
+  module: {
+    loaders: [
+      { test: /\.css$/, loader: 'style-loader!css-loader'},
+```
+
+**3. Add a CSS loader to the webpack prod config**
+
+You must use the **ExtractTextPlugin** in this loader. In `prod.config.js` modify **module loaders** to include a test and loader for css
+
+```javascript
+  module: {
+    loaders: [
+      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader')},
+```
+
+**Now you may simply omit assigning the `required` stylesheet to a variable and keep it at the top of your `render()` function.**
+
+```javascript
+render() {
+require('./App.css');
+require('aModule/dist/style.css');
+...
+```
+
+**NOTE** In order to use this method with **scss or less** files one more modification must be made. In both `dev.config.js` and `prod.config.js` in the loaders for less and scss files remove 
+
+1. `modules`
+2. `localIdentName...`
+
+Before:
+```javascript
+{ test: /\.less$/, loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap' },
+```
+After:
+```javascript
+{ test: /\.less$/, loader: 'style!css?importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap' },
+```
+
+After this modification to both loaders you will be able to use scss and less files in the same way as css files.
+
+#### Unit Tests
+
+The project uses [Mocha](https://mochajs.org/) to run your unit tests, it uses [Karma](http://karma-runner.github.io/0.13/index.html) as the test runner, it enables the feature that you are able to render your tests to the browser (e.g: Firefox, Chrome etc.), which means you are able to use the [Test Utilities](http://facebook.github.io/react/docs/test-utils.html) from Facebook api like `renderIntoDocument()`.
+
+To run the tests in the project, just simply run `npm test` if you have `Chrome` installed, it will be automatically launched as a test service for you.
+
+To keep watching your test suites that you are working on, just set `singleRun: false` in the `karma.conf.js` file. Please be sure set it to `true` if you are running `npm test` on a continuous integration server (travis-ci, etc).
+
+## Deployment on Heroku
+
+To get this project to work on Heroku, you need to:
+
+1. Remove the `"PORT": 8080` line from the `betterScripts` / `start-prod` section of `package.json`.
+2. `heroku config:set NODE_ENV=production`
+3. `heroku config:set NODE_PATH=./src`
+4. `heroku config:set NPM_CONFIG_PRODUCTION=false`
+  * This is to enable webpack to run the build on deploy.
+
+The first deploy might take a while, but after that your `node_modules` dir should be cached.
+
+## FAQ
+
+This project moves fast and has an active community, so if you have a question that is not answered below please visit our [Discord channel](https://discord.gg/0ZcbPKXt5bZZb1Ko) or file an issue.
+
+
+## Roadmap 
+
+Although this isn't a library, we recently started versioning to make it easier to track breaking changes and emerging best practices. 
+
+* [Babel 6](https://github.com/babel/babel) - Coming soon with v1 (see [#488](https://github.com/erikras/react-redux-universal-hot-example/issues/488))
+* [Inline Styles](docs/InlineStyles.md) - CSS is dead
+
+## Contributing
+
+I am more than happy to accept external contributions to the project in the form of feedback, bug reports and even better - pull requests :) 
+
+If you would like to submit a pull request, please make an effort to follow the guide in [CONTRIBUTING.md](CONTRIBUTING.md). 
+ 
+---
+Thanks for checking this out.
+
+– Erik Rasmussen, [@erikras](https://twitter.com/erikras)
