@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-8874531f0c4ff4440d23.js"
+    "main": "http://localhost:3001/dist/main-ce1509da1894e8093bcf.js"
   },
   "styles": {},
   "assets": {
@@ -16,28 +16,6 @@
       "infoBar": "infoBar___1pSXw",
       "time": "time___3oRnR",
       "_style": ".infoBar___1pSXw {\n  font-style: italic;\n}\n\n.time___3oRnR {\n  margin: 0 30px;\n}\n"
-    },
-    "./src/components/SurveyForm/SurveyForm.scss": {
-      "inputGroup": "inputGroup___2INBO",
-      "flags": "flags___Y7D3i",
-      "active": "active___113ZO",
-      "dirty": "dirty___1Vtz9",
-      "visited": "visited___FRHMm",
-      "touched": "touched___31a41",
-      "radioLabel": "radioLabel___2RtTR",
-      "cog": "cog___3u3fa",
-      "_style": ".inputGroup___2INBO {\n  position: relative;\n}\n\n.flags___Y7D3i {\n  position: absolute;\n  right: 20px;\n  top: 7px;\n}\n\n.flags___Y7D3i > * {\n  margin: 0 2px;\n  width: 20px;\n  height: 20px;\n  border-radius: 20px;\n  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);\n  color: white;\n  float: right;\n  text-align: center;\n}\n\n.flags___Y7D3i .active___113ZO {\n  background: linear-gradient(#cc0, #aa0);\n  color: black;\n}\n\n.flags___Y7D3i .dirty___1Vtz9 {\n  background: linear-gradient(#090, #060);\n}\n\n.flags___Y7D3i .visited___FRHMm {\n  background: linear-gradient(#009, #006);\n}\n\n.flags___Y7D3i .touched___31a41 {\n  background: linear-gradient(#099, #066);\n}\n\n.radioLabel___2RtTR {\n  margin: 0 25px 0 5px;\n}\n\n.cog___3u3fa {\n  position: absolute;\n  left: 0;\n  top: 10px;\n}\n"
-    },
-    "./src/containers/Widgets/Widgets.scss": {
-      "widgets": "widgets___3TrPB",
-      "refreshBtn": "refreshBtn___18-3v",
-      "idCol": "idCol___3gf_9",
-      "colorCol": "colorCol___2bs_U",
-      "sprocketsCol": "sprocketsCol___3nkz0",
-      "ownerCol": "ownerCol___fwn86",
-      "buttonCol": "buttonCol___1feoO",
-      "saving": "saving___7FVQZ",
-      "_style": ".widgets___3TrPB .refreshBtn___18-3v {\n  margin-left: 20px;\n}\n\n.widgets___3TrPB .idCol___3gf_9 {\n  width: 5%;\n}\n\n.widgets___3TrPB .colorCol___2bs_U {\n  width: 20%;\n}\n\n.widgets___3TrPB .sprocketsCol___3nkz0 {\n  width: 20%;\n  text-align: right;\n}\n\n.widgets___3TrPB .sprocketsCol___3nkz0 input {\n  text-align: right;\n}\n\n.widgets___3TrPB .ownerCol___fwn86 {\n  width: 30%;\n}\n\n.widgets___3TrPB .buttonCol___1feoO {\n  width: 25%;\n}\n\n.widgets___3TrPB .buttonCol___1feoO .btn {\n  margin: 0 5px;\n}\n\n.widgets___3TrPB tr.saving___7FVQZ {\n  opacity: 0.8;\n}\n\n.widgets___3TrPB tr.saving___7FVQZ .btn[disabled] {\n  opacity: 1;\n}\n"
     },
     "./src/containers/App/App.scss": {
       "app": "app___3CHIL",
@@ -57,10 +35,6 @@
       "github": "github___2lb3P",
       "counterContainer": "counterContainer___3C4w6",
       "_style": "/**\r\n *  Define scss variables here.\r\n *\r\n *  Available options for Bootstrap:\r\n *  http://getbootstrap.com/customize/\r\n *\r\n */\n.home___OjJam dd {\n  margin-bottom: 15px;\n}\n\n.masthead___HoUnj {\n  background: #2d2d2d;\n  padding: 40px 20px;\n  color: white;\n  text-align: center;\n}\n\n.masthead___HoUnj .logo___3-Bs- {\n  margin: auto;\n  height: 200px;\n  width: 200px;\n  border-radius: 100px;\n  border: 1px solid #33e0ff;\n  box-shadow: inset 0 0 10px #33e0ff;\n  vertical-align: middle;\n}\n\n.masthead___HoUnj .logo___3-Bs- p {\n  line-height: 200px;\n  margin: 0px;\n}\n\n.masthead___HoUnj .logo___3-Bs- img {\n  width: 75%;\n  margin: auto;\n}\n\n.masthead___HoUnj h1 {\n  color: #33e0ff;\n  font-size: 4em;\n}\n\n.masthead___HoUnj h2 {\n  color: #ddd;\n  font-size: 2em;\n  margin: 20px;\n}\n\n.masthead___HoUnj a {\n  color: #ddd;\n}\n\n.masthead___HoUnj p {\n  margin: 10px;\n}\n\n.masthead___HoUnj .humility___3ekBr {\n  color: #777;\n}\n\n.masthead___HoUnj .humility___3ekBr a {\n  color: #777;\n}\n\n.masthead___HoUnj .github___2lb3P {\n  font-size: 1.5em;\n}\n\n.counterContainer___3C4w6 {\n  text-align: center;\n  margin: 20px;\n}\n"
-    },
-    "./src/containers/Login/Login.scss": {
-      "loginPage": "loginPage___1Eg-1",
-      "_style": ".loginPage___1Eg-1 input {\n  padding: 5px 10px;\n  border-radius: 5px;\n  border: 1px solid #ccc;\n}\n\n.loginPage___1Eg-1 form {\n  margin: 30px 0;\n}\n\n.loginPage___1Eg-1 form .btn {\n  margin-left: 10px;\n}\n"
     }
   }
 }
