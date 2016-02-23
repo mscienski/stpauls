@@ -1,4 +1,4 @@
-require('babel/polyfill');
+require('babel-polyfill');
 
 const environment = {
   development: {
@@ -15,20 +15,21 @@ module.exports = Object.assign({
   apiHost: process.env.APIHOST || 'localhost',
   apiPort: process.env.APIPORT,
   app: {
-    title: 'St. Paul\'s Preschool',
-    description: 'St. Paul\'s Preschool',
+    title: 'React Redux Example',
+    description: 'All the modern best practices in one example.',
     head: {
-      titleTemplate: 'St. Paul\'s Preschool %s',
+      titleTemplate: 'React Redux Example: %s',
       meta: [
-        {name: 'description', content: 'St. Paul\'s Preschool'},
+        {name: 'description', content: 'All the modern best practices in one example.'},
         {charset: 'utf-8'},
-        {property: 'og:site_name', content: 'St. Paul\'s Preschool'},
+        {property: 'og:site_name', content: 'React Redux Example'},
+        {property: 'og:image', content: 'https://react-redux.herokuapp.com/logo.jpg'},
         {property: 'og:locale', content: 'en_US'},
-        {property: 'og:title', content: 'St. Paul\'s Preschool'},
-        {property: 'og:description', content: 'St. Paul\'s Preschool'},
+        {property: 'og:title', content: 'React Redux Example'},
+        {property: 'og:description', content: 'All the modern best practices in one example.'},
         {property: 'og:card', content: 'summary'},
-        {property: 'og:site', content: '@mscienski'},
-        {property: 'og:creator', content: '@mscienski'},
+        {property: 'og:site', content: '@erikras'},
+        {property: 'og:creator', content: '@erikras'},
         {property: 'og:image:width', content: '200'},
         {property: 'og:image:height', content: '200'}
       ]

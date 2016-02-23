@@ -24,8 +24,7 @@ This is a starter boilerplate app I've put together using the following technolo
 * [Webpack Hot Middleware](https://github.com/glenjamin/webpack-hot-middleware)
 * [Redux](https://github.com/rackt/redux)'s futuristic [Flux](https://facebook.github.io/react/blog/2014/05/06/flux.html) implementation
 * [Redux Dev Tools](https://github.com/gaearon/redux-devtools) for next generation DX (developer experience). Watch [Dan Abramov's talk](https://www.youtube.com/watch?v=xsSnOQynTHs).
-* [Redux Router](https://github.com/acdlite/redux-router) Keep your router state in your Redux store
-  - There is a migration in progress to [Redux Simple Router](https://github.com/jlongster/redux-simple-router/). Please test it out in the [simple-router](https://github.com/erikras/react-redux-universal-hot-example/tree/simple-router) branch! 
+* [React Router Redux](https://github.com/reactjs/react-router-redux) Redux/React Router bindings.
 * [ESLint](http://eslint.org) to maintain a consistent code style
 * [redux-form](https://github.com/erikras/redux-form) to manage form state in Redux
 * [lru-memoize](https://github.com/erikras/lru-memoize) to speed up form validation
@@ -82,6 +81,7 @@ A demonstration of this app can be seen [running on heroku](https://react-redux.
 * [Exploring the Demo App](docs/ExploringTheDemoApp/ExploringTheDemoApp.md) is a guide that can be used before you install the kit.
 * [Installing the Kit](docs/InstallingTheKit/InstallingTheKit.md) guides you through installation and running the development server locally.
 * [Adding Text to the Home Page](docs/AddingToHomePage/AddingToHomePage.md) guides you through adding "Hello, World!" to the home page.
+* [Adding A Page](docs/AddingAPage/AddingAPage.md) guides you through adding a new page.
 * [React Tutorial - Converting Reflux to Redux](http://engineering.wework.com/process/2015/10/01/react-reflux-to-redux/), by Matt Star
    If you are the kind of person that learns best by following along a tutorial, I can recommend Matt Star's overview and examples.
 
@@ -244,7 +244,6 @@ This project moves fast and has an active community, so if you have a question t
 
 Although this isn't a library, we recently started versioning to make it easier to track breaking changes and emerging best practices. 
 
-* [Babel 6](https://github.com/babel/babel) - Coming soon with v1 (see [#488](https://github.com/erikras/react-redux-universal-hot-example/issues/488))
 * [Inline Styles](docs/InlineStyles.md) - CSS is dead
 
 ## Contributing
